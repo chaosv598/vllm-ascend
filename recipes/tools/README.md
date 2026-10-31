@@ -10,7 +10,11 @@ executes recipe shell commands, pulls serving images, or loads model weights.
 The original `validate` job keeps calling
 `vllm-project/recipes/.github/workflows/validate-recipes.yml@main` with its
 existing inputs. A separate `Ascend configuration` CPU job has `needs: validate`
-and runs only after the official check succeeds. No upstream changes or copies
+and calls the local `.github/workflows/validate-ascend-recipes.yml` reusable
+workflow only after the official check succeeds. The entry workflow contains
+only orchestration; checkout, setup, lint/tests, checks and upload live in the
+local reusable workflow. Changes to either workflow trigger the recipe check.
+No upstream changes or copies
 of the official workflow steps are needed in that original job.
 
 The additional job checks out the PR merge revision, target revision and
