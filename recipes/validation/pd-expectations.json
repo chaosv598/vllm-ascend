@@ -1,0 +1,10 @@
+{
+  "deepseek-ai/DeepSeek-V4-Flash": {
+    "ascend_910c": {
+      "ascend_w8a8": {
+        "connector": "MooncakeConnectorV1",
+        "router": "vllm-router"
+      }
+    }
+  }
+}
