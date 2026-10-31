@@ -19,7 +19,7 @@ permissions:
 jobs:
   validate:
     name: Recipes
-    if: github.repository_owner == 'vllm-project'
+    if: github.repository_owner == 'vllm-project' || github.repository == 'chaosv598/vllm-ascend'
     uses: vllm-project/recipes/.github/workflows/validate-recipes.yml@main
     with:
       source: vllm-ascend
