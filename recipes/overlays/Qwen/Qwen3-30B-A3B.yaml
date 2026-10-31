@@ -44,6 +44,53 @@ variants:
     hardware_overrides:
       ascend_910c:
         docker_image: swr.cn-southwest-2.myhuaweicloud.com/base_image/ascend-ci/vllm-ascend:v0.23.0-a3
+  ascend_ci_bad_parallel:
+    model_id: Eco-Tech/Qwen3-30B-A3B-w8a8
+    precision: int8
+    label: CI ONLY - negative parallel probe
+    vram_minimum_gb: 37
+    description: INTENTIONALLY INVALID CI TEST. Do not merge or deploy. A new Ascend-only variant requests DP8 together with TP4. This requires 32 NPUs on a single node with a 16-NPU hardware profile.
+    supported_hardware:
+      - ascend_910c
+    tp: 4
+    min_vllm_version: 0.23.0
+    extra_args:
+      - '--trust-remote-code'
+      - '--max-num-seqs'
+      - '100'
+      - '--max-model-len'
+      - '40960'
+      - '--max-num-batched-tokens'
+      - '16384'
+      - '--enable-expert-parallel'
+      - '--quantization'
+      - ascend
+      - '--distributed_executor_backend'
+      - mp
+      - '--no-enable-prefix-caching'
+      - '--async-scheduling'
+      - '--compilation-config'
+      - '{"cudagraph_mode": "FULL_DECODE_ONLY"}'
+      - '--additional-config'
+      - '{"enable_flashcomm1": true, "weight_nz_mode": 2}'
+      - '--gpu-memory-utilization'
+      - '0.95'
+      - '--data-parallel-size'
+      - '8'
+    extra_env:
+      VLLM_USE_MODELSCOPE: 'True'
+      HCCL_OP_EXPANSION_MODE: AIV
+      HCCL_BUFFSIZE: '1024'
+      OMP_PROC_BIND: 'false'
+      OMP_NUM_THREADS: '1'
+      TASK_QUEUE_ENABLE: '1'
+      PYTORCH_NPU_ALLOC_CONF: expandable_segments:True
+      VLLM_USE_RUST_FRONTEND: '1'
+    hardware_overrides:
+      ascend_910c:
+        docker_image: swr.cn-southwest-2.myhuaweicloud.com/base_image/ascend-ci/vllm-ascend:v0.23.0-a3
+        install:
+          pip: false
 meta:
   hardware:
     ascend_910c: verified
